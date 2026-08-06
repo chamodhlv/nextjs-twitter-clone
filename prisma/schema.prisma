@@ -77,6 +77,19 @@ model Like {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
-  @@index([userId, postId])
+  @@index([userId, postId])//prevent duplicate likes from the same user on the same post
 }
 
+model Follows {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+
+  followerId  String
+  follower    User     @relation("following", fields: [followerId], references: [id], onDelete: Cascade)
+
+  followingId String
+  following   User     @relation("followers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followerId, followingId])//prevent duplicate follows from the same user to the same user
+}
