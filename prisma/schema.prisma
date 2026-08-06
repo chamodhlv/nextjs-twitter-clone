@@ -32,8 +32,8 @@ model User {
   followers Follows[] @relation("following")
   following Follows[] @relation("followers")
 
-  notifications Notification[] @relation("userNotifications")
-  notificationsCreated Notification[] @relation("notificationsCreator")
+  notifications Notification[] @relation("userNotifications") // notifications received by a user
+  notificationsCreated Notification[] @relation("notificationCreator") // notifications triggered by a user
 }
 
 model Post {
@@ -62,6 +62,8 @@ model Comment {
 
   postId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  notifications Notification[]
 
   @@index([authorId,postId])
 }
@@ -92,4 +94,29 @@ model Follows {
 
   @@unique([followerId, followingId])
   @@index([followerId, followingId])//prevent duplicate follows from the same user to the same user
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String                  
+  creatorId String                  
+  type      NotificationType        
+  read      Boolean  @default(false)
+  postId    String?                 
+  commentId String?                
+  createdAt DateTime @default(now())
+  
+  // Relations
+  user      User     @relation("userNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  creator   User     @relation("notificationCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+enum NotificationType {
+  LIKE     
+  COMMENT 
+  FOLLOW   
 }
