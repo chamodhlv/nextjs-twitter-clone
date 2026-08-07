@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
+import { createPost } from "@/actions/post.action";
+import { toast } from "react-hot-toast";
 
 function CreatePost() {
   const { user } = useUser();
@@ -19,9 +21,17 @@ function CreatePost() {
 
     setIsPosting(true);
     try {
-      await createPost({ content, imageUrl });
+      const result = await createPost(content, imageUrl);
+
+      if (result?.success) {
+        setContent("");
+        setImageUrl("");
+        setShowImageUpload(false);
+        toast.success("Post created successfully!");
+      }
     } catch (error) {
       console.error("Error creating post:", error);
+      toast.error("Failed to create post. Please try again.");
     } finally {
       setIsPosting(false);
     }
