@@ -14,6 +14,7 @@ async function DesktopNavbar() {
       <Button
         variant="ghost"
         className="flex items-center gap-2"
+        nativeButton={false}
         render={
           <Link href="/">
             <HomeIcon className="w-4 h-4" />
@@ -27,6 +28,7 @@ async function DesktopNavbar() {
           <Button
             variant="ghost"
             className="flex items-center gap-2"
+            nativeButton={false}
             render={
               <Link href="/notifications">
                 <BellIcon className="w-4 h-4" />
@@ -38,6 +40,7 @@ async function DesktopNavbar() {
           <Button
             variant="ghost"
             className="flex items-center gap-2"
+            nativeButton={false}
             render={
               <Link
                 href={`/profile/${
