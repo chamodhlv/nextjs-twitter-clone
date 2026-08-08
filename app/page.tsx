@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import CreatePosts from "@/components/CreatePost";
+import FollowerRecommendation from "@/components/FollowerRecommendation";
 
 export default async function Home() {
   const user = await currentUser();
@@ -8,7 +9,9 @@ export default async function Home() {
     <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
       <div className="lg:col-span-6">{user ? <CreatePosts /> : null}</div>
 
-      <div className="hidden lg:block lg:col-span-4">Who to follow</div>
+      <div className="hidden lg:block lg:col-span-4">
+        <FollowerRecommendation />
+      </div>
     </div>
   );
 }
