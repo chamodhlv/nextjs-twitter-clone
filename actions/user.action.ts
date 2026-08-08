@@ -34,3 +34,29 @@ export async function syncUser() {
     console.error("Error syncing user:", error);
   }
 }
+
+export async function getUserByClerkId(clerkId: string) {
+  return prisma.user.findUnique({
+    where: { clerkId },
+    include: {
+      _count: {
+        select: {
+          followers: true,
+          following: true,
+        },
+      },
+    },
+  });
+}
+
+export async function getDbUserId() {
+  const { userId: clerkId } = await auth();
+
+  if (!clerkId) throw new Error("User is not authenticated");
+
+  const user = await getUserByClerkId(clerkId);
+
+  if (!user) throw new Error("User not found in database");
+
+  return user.id;
+}
