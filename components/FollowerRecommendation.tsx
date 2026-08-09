@@ -40,7 +40,7 @@ async function FollowerRecommendation() {
                   </p>
                 </div>
               </div>
-              {/* <FollowButton userId={user.id} /> */}
+              <FollowButton userId={user.id} />
             </div>
           ))}
         </div>
