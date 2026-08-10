@@ -20,6 +20,7 @@ export const ourFileRouter = {
       return { userId };
     })
     .onUploadComplete(async ({ metadata, file }) => {
+      metadata.userId; // this is the userId we returned in the middleware
       try {
         return { fileUrl: file.url };
       } catch (error) {
