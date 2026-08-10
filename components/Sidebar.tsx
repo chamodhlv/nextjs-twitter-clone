@@ -40,13 +40,17 @@ async function Sidebar() {
               <Separator className="my-4" />
               <div className="flex justify-between">
                 <div>
-                  <p className="font-medium">{user._count.following}</p>
-                  <p className="text-xs text-muted-foreground">Following</p>
+                  <p className="font-medium pl-5">{user._count.following}</p>
+                  <p className="text-xs text-muted-foreground pl-5">
+                    Following
+                  </p>
                 </div>
                 <Separator orientation="vertical" />
                 <div>
-                  <p className="font-medium">{user._count.followers}</p>
-                  <p className="text-xs text-muted-foreground">Followers</p>
+                  <p className="font-medium pr-5">{user._count.followers}</p>
+                  <p className="text-xs text-muted-foreground pr-5">
+                    Followers
+                  </p>
                 </div>
               </div>
               <Separator className="my-4" />
