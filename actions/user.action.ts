@@ -64,7 +64,13 @@ export async function getDbUserId() {
 
 export async function getRandomUsers() {
   try {
-    const userId = await getDbUserId();
+    const { userId: clerkId } = await auth();
+    if (!clerkId) return [];
+
+    const user = await getUserByClerkId(clerkId);
+    if (!user) return [];
+
+    const userId = user.id;
 
     const randomUsers = await prisma.user.findMany({
       where: {

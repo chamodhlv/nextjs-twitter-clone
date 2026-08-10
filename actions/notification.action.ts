@@ -2,11 +2,14 @@
 
 import prisma from "@/lib/prisma";
 import { getDbUserId } from "./user.action";
+import { auth } from "@clerk/nextjs/server";
 
 export async function getNotifications() {
   try {
+    const { userId: clerkId } = await auth();
+    if (!clerkId) return [];
+
     const userId = await getDbUserId();
-    if (!userId) return [];
 
     const notifications = await prisma.notification.findMany({
       where: {
