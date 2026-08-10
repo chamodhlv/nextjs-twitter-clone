@@ -7,7 +7,9 @@ import { getDbUserId } from "./user.action";
 
 export async function getProfileByUsername(username: string) {
   try {
-    const user = await prisma.user.findUnique({
+    if (!username) return null;
+
+    const user = await prisma.user.findFirst({
       where: { username: username },
       select: {
         id: true,
