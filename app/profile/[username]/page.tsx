@@ -4,6 +4,8 @@ import {
   getUserPosts,
   isFollowing,
 } from "@/actions/profile.action";
+import { getUserByClerkId } from "@/actions/user.action";
+import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 import ProfilePageClient from "./ProfilePageClient";
 
@@ -33,6 +35,10 @@ async function ProfilePageServer({
 
   if (!user) notFound();
 
+  const { userId: clerkId } = await auth();
+  const currentUser = clerkId ? await getUserByClerkId(clerkId) : null;
+  const currentDbUserId = currentUser?.id ?? null;
+
   const [posts, likedPosts, isCurrentUserFollowing] = await Promise.all([
     getUserPosts(user.id),
     getUserLikedPosts(user.id),
@@ -45,8 +51,10 @@ async function ProfilePageServer({
       posts={posts}
       likedPosts={likedPosts}
       isFollowing={isCurrentUserFollowing}
+      currentDbUserId={currentDbUserId}
     />
   );
 }
 
 export default ProfilePageServer;
+

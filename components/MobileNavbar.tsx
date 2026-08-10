@@ -22,7 +22,7 @@ import { useAuth, SignInButton, SignOutButton } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-function MobileNavbar() {
+function MobileNavbar({ unreadCount = 0 }: { unreadCount?: number }) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { isSignedIn } = useAuth();
   const { theme, setTheme } = useTheme();
@@ -42,7 +42,12 @@ function MobileNavbar() {
 
       <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
         <SheetTrigger render={<Button variant="ghost" size="icon" />}>
-          <MenuIcon className="h-5 w-5" />
+          <div className="relative flex items-center justify-center">
+            <MenuIcon className="h-5 w-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 size-2 bg-red-500 rounded-full ring-2 ring-background animate-pulse" />
+            )}
+          </div>
         </SheetTrigger>
         <SheetContent side="right" className="w-[300px]">
           <SheetHeader>
@@ -67,7 +72,12 @@ function MobileNavbar() {
                   className="flex items-center gap-3 justify-start"
                   render={
                     <Link href="/notifications">
-                      <BellIcon className="w-4 h-4" />
+                      <div className="relative flex items-center justify-center">
+                        <BellIcon className="w-4 h-4" />
+                        {unreadCount > 0 && (
+                          <span className="absolute -top-1 -right-1 size-2 bg-red-500 rounded-full ring-2 ring-background animate-pulse" />
+                        )}
+                      </div>
                       Notifications
                     </Link>
                   }

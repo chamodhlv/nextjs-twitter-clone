@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { getDbUserId } from "./user.action";
+import { getDbUserId, getUserByClerkId } from "./user.action";
 import { auth } from "@clerk/nextjs/server";
 
 export async function getNotifications() {
@@ -70,3 +70,24 @@ export async function markNotificationsAsRead(notificationIds: string[]) {
     return { success: false };
   }
 }
+
+export async function getUnreadNotificationCount() {
+  try {
+    const { userId: clerkId } = await auth();
+    if (!clerkId) return 0;
+
+    const user = await getUserByClerkId(clerkId);
+    if (!user) return 0;
+
+    return await prisma.notification.count({
+      where: {
+        userId: user.id,
+        read: false,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching unread notification count:", error);
+    return 0;
+  }
+}
+

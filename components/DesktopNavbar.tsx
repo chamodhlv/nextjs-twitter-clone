@@ -5,7 +5,7 @@ import { SignInButton, UserButton } from "@clerk/nextjs";
 import ModeToggle from "./ModeToggle";
 import { currentUser } from "@clerk/nextjs/server";
 
-async function DesktopNavbar() {
+async function DesktopNavbar({ unreadCount = 0 }: { unreadCount?: number }) {
   const user = await currentUser();
   return (
     <div className="hidden md:flex items-center space-x-4">
@@ -31,7 +31,12 @@ async function DesktopNavbar() {
             nativeButton={false}
             render={
               <Link href="/notifications">
-                <BellIcon className="w-4 h-4" />
+                <div className="relative flex items-center justify-center">
+                  <BellIcon className="w-4 h-4" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 size-2 bg-red-500 rounded-full ring-2 ring-background animate-pulse" />
+                  )}
+                </div>
                 <span className="hidden lg:inline">Notifications</span>
               </Link>
             }

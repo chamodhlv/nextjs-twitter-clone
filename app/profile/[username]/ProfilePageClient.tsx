@@ -40,6 +40,7 @@ interface ProfilePageClientProps {
   posts: Post;
   likedPosts: Post;
   isFollowing: boolean;
+  currentDbUserId: string | null;
 }
 
 function ProfilePageClient({
@@ -47,6 +48,7 @@ function ProfilePageClient({
   likedPosts,
   user,
   posts,
+  currentDbUserId,
 }: ProfilePageClientProps) {
   const { user: currentUser } = useUser();
   const [showEditDialog, setShowEditDialog] = useState(false);
@@ -222,7 +224,7 @@ function ProfilePageClient({
             <div className="space-y-6">
               {posts.length > 0 ? (
                 posts.map((post) => (
-                  <PostCard key={post.id} post={post} dbUserId={user.id} />
+                  <PostCard key={post.id} post={post} dbUserId={currentDbUserId} />
                 ))
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
@@ -236,7 +238,7 @@ function ProfilePageClient({
             <div className="space-y-6">
               {likedPosts.length > 0 ? (
                 likedPosts.map((post) => (
-                  <PostCard key={post.id} post={post} dbUserId={user.id} />
+                  <PostCard key={post.id} post={post} dbUserId={currentDbUserId} />
                 ))
               ) : (
                 <div className="text-center py-8 text-muted-foreground">

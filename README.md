@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 𝕏 Twitter Clone
 
-## Getting Started
+A modern, full-stack Twitter (𝕏) Clone built with **Next.js 16 (App Router)**, **React 19**, **Prisma v7**, **Tailwind CSS v4**, **Clerk Authentication**, and **UploadThing**.
 
-First, run the development server:
+![Twitter Clone Screenshot](./screencapture.png)
+
+---
+
+## ⚡ Tech Stack
+
+| Category | Technology |
+| :--- | :--- |
+| **Framework** | [Next.js 16](https://nextjs.org/) (App Router & Server Actions) |
+| **Frontend Library** | [React 19](https://react.dev/) |
+| **Authentication** | [Clerk](https://clerk.com/) |
+| **Database & ORM** | [Neon PostgreSQL](https://neon.tech/) & [Prisma v7](https://www.prisma.io/) (with Driver Adapters) |
+| **Styling & UI** | [Tailwind CSS v4](https://tailwindcss.com/), [Shadcn UI](https://ui.shadcn.com/), [Lucide Icons](https://lucide.dev/) |
+| **File Uploads** | [UploadThing](https://uploadthing.com/) |
+| **Theme System** | `next-themes` (Dark Mode & Light Mode support) |
+| **Toast Notifications** | `react-hot-toast` |
+
+---
+
+## ✨ Features
+
+- **🔐 Authentication & User Sync**: Secure user onboarding and login powered by Clerk with automated PostgreSQL database synchronization.
+- **✍️ Post Creation & Image Uploads**: Share text posts with high-resolution image uploads powered by UploadThing.
+- **❤️ Interactive Feed & Optimistic Likes**: Like & unlike posts instantly with optimistic UI state updates and real-time counter changes.
+- **💬 Commenting System**: Expandable comment section per post, allowing users to comment and engage.
+- **👤 Dynamic User Profiles**: Dedicated profile pages (`/profile/[username]`) with editable bio, location, website, avatar, follower/following counts, and tab views for user posts and liked posts.
+- **🤝 Follow / Unfollow System**: Follow or unfollow users dynamically with real-time button states and a "Who to Follow" recommendation sidebar.
+- **🔔 Notification System**: 
+  - Real-time unread notification badge indicator on the navbar Bell icon.
+  - Dedicated notification center tracking likes, comments, and new followers.
+  - Automatic unread-to-read status marking.
+- **🛡️ Strict Ownership & Authorization**: Smart permissions ensure delete controls only appear on posts authored by the logged-in user.
+- **🌗 Dark / Light Mode**: Seamless theme switching with system preference support.
+- **📱 Fully Responsive**: Custom mobile navigation drawer and responsive multi-column layout for desktop, tablet, and mobile devices.
+
+---
+
+## 📁 Project Structure
+
+```text
+nextjs-twitter-clone/
+├── actions/                  # Next.js Server Actions (user, post, profile, notification)
+├── app/                      # Next.js 16 App Router pages and API routes
+│   ├── api/uploadthing/      # UploadThing endpoint handlers
+│   ├── notifications/        # Notifications page
+│   ├── profile/[username]/   # User profile routes
+│   ├── globals.css           # Tailwind v4 configuration & design system
+│   ├── layout.tsx            # Root layout with Clerk & Theme providers
+│   └── page.tsx              # Home feed page
+├── components/               # React UI components
+│   ├── ui/                   # Shadcn UI primitive components
+│   ├── CreatePost.tsx        # Post creation box with image upload
+│   ├── DesktopNavbar.tsx     # Desktop navigation with unread badge
+│   ├── MobileNavbar.tsx      # Mobile drawer navigation
+│   ├── Navbar.tsx            # Sticky header container
+│   ├── PostCard.tsx          # Feed item with likes, comments, delete dialog
+│   ├── Sidebar.tsx           # User profile summary sidebar card
+│   └── FollowerRecommendation.tsx # "Who to Follow" sidebar
+├── lib/                      # Utilities and Prisma client instance
+├── prisma/                   # Prisma v7 schema and configuration
+│   ├── schema.prisma         # Database models (User, Post, Like, Comment, Follows, Notification)
+│   └── prisma.config.ts      # Prisma v7 config
+└── public/                   # Static assets & screenshots
+```
+
+---
+
+## 🛠️ Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+- **Node.js**: `v20.19.0` or higher
+- **npm** / **yarn** / **pnpm** / **bun**
+
+---
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/nextjs-twitter-clone.git
+cd nextjs-twitter-clone
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Set Up Environment Variables
+
+Create a `.env` file in the root directory and configure the environment variables:
+
+```env
+# Clerk Authentication Keys
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+
+# Database Connection (Neon Postgres)
+DATABASE_URL="postgresql://user:password@ep-sample-pooler.region.aws.neon.tech/neondb?sslmode=verify-full"
+
+# UploadThing Credentials (Optional / Required for uploads)
+UPLOADTHING_TOKEN=...
+```
+
+### 4. Setup Prisma Database
+
+Generate the Prisma client and push the schema to your database:
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 5. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Building for Production
 
-## Learn More
+To verify types and build the production bundle:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+npm run start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📄 License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.
